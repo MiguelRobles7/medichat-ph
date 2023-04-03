@@ -3,10 +3,10 @@
 :- dynamic age/1.
 :- dynamic bmi/1.
 
-yes_symp(X) :- symptom(X), unknown(X), asserta(has(X)).
-no_symp(X) :- symptom(X), unknown(X), asserta(has_no(X)).
-assert_age(A) :- number(A), \+ age(_), asserta(age(A)).
-assert_bmi(A) :- number(A), \+ bmi(_), asserta(bmi(A)).
+yes_symp(X) :- symptom(X), unknown(X), asserta(has(X)), !.
+no_symp(X) :- symptom(X), unknown(X), asserta(has_no(X)), !.
+assert_age(A) :- number(A), \+ age(_), asserta(age(A)), !.
+assert_bmi(A) :- number(A), \+ bmi(_), asserta(bmi(A)), !.
 
 %definitions
 yes(X) :- once(has(X)).
@@ -16,7 +16,7 @@ no(D) :- disease(D),
 			clause(has(D), B),
 			symptom_list(B, L)
 		),
-        once((member(S, L), has_no(S)))
+        once((member(S, L), no(S)))
 	).
 unknown(X) :- \+yes(X), \+no(X).
 ysus(D) :- once(sus(D)).
@@ -25,7 +25,7 @@ nsus(D) :-
            clause(sus(D), B),
            symptom_list(B, L)
         ),
-        once((member(S, L), has_no(S)))
+        once((member(S, L), no(S)))
 	).
 usus(D) :- \+ysus(D), \+nsus(D).
 
@@ -72,32 +72,32 @@ all_uds(D, X) :- disease(D),
 all_susd(X) :-
     findall(A, clause(sus(A), _), L),
     sort(L, X).
-all_ysusd(X) :- findall(A, (has(A), ysus(A)), X).
-all_nsusd(X) :- findall(A, (has(A), nsus(A)), X).
-all_ususd(X) :- findall(A, (has(A), usus(A)), X).
+all_ysusd(X) :- findall(D, (disease(D), yes(D), ysus(D)), X).
+all_nsusd(X) :- findall(D, (disease(D), yes(D), nsus(D)), X).
+all_ususd(X) :- findall(D, (disease(D), yes(D), usus(D)), X).
 
 %query functions for symptoms of a susceptible disease
-all_susds(D, X) :- ysus(D),
+all_susds(D, X) :- 
     findall(L, (
 		clause(sus(D), B),
-		sympyom_list(B, L)
+		symptom_list(B, L)
 	), X).
-all_ysusds(D, X) :- ysus(D),
+all_ysusds(D, X) :- yes(D),
     findall(L, (
 		clause(sus(D), B),
-		sympyom_list(B, L),
+		symptom_list(B, L),
 		forall(member(S, L), yes(S))
 	), X).
-all_nsusds(D, X) :- ysus(D),
+all_nsusds(D, X) :- yes(D),
     findall(L, (
 		clause(sus(D), B),
-		sympyom_list(B, L),
+		symptom_list(B, L),
 		once((member(S, L), no(S)))
 	), X).
-all_ususds(D, X) :- ysus(D),
+all_ususds(D, X) :- yes(D),
     findall(L, (
 		clause(sus(D), B),
-		sympyom_list(B, L),
+		symptom_list(B, L),
 		\+once((member(S, L), no(S))),
 		\+forall(member(S, L), yes(S))
 	), X).
@@ -168,7 +168,7 @@ has(pneumonia) :- has(low_body_temperature), has(coughing_blood_mucus_green_yell
 
 has(diarrhea) :- has(stomach_pains), has(bloating), has(nausea), has(vomiting), has(fever), has(blood_in_stool), has(mucus_in_stool), has(urgent_bowel_movement).
 
-%numerics
+%numeric symptoms
 has(obese) :- bmi(B), B >= 30.
 has(overweight) :- bmi(B), B >= 25.
 has(underweight) :- bmi(B), B =< 18.5.
@@ -178,6 +178,16 @@ has(mid_age) :- age(A), A >= 25.
 has(teen) :- age(A), A >= 13, A =< 19.
 has(child) :- age(A), A =< 12.
 has(infant) :- age(A), A =< 1.
+%this is required else has_no will always be false even if they are true
+has_no(obese) :- bmi(B), B < 30.
+has_no(overweight) :- bmi(B), B < 25.
+has_no(underweight) :- bmi(B), B > 18.5.
+has_no(elder) :- age(A), A < 65.
+has_no(early_old) :- age(A), A < 45.
+has_no(mid_age) :- age(A), A < 25.
+has_no(teen) :- age(_), \+has(teen).
+has_no(child) :- age(A), A > 12.
+has_no(infant) :- age(A), A > 1.
 
 %diseases
 disease(malaria).

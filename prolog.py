@@ -34,8 +34,20 @@ class PrologShell:
 		return '\n'.join(res)
 		
 	def get_symptom_occurence(self, symptom):
-		return self._symptom_occurence[symptom]
+		return self._symptom_occurence.get(symptom, 0)
+	
+	def assert_symptom(self, symptom):
+		self.query(f'ay({symptom}).')
 
+	def assert_no_symptom(self, symptom):
+		self.query(f'an({symptom}).')
+
+	def assert_bmi(self, bmi):
+		self.query(f'assert_bmi({bmi}).')
+
+	def assert_age(self, age):
+		self.query(f'assert_age({age}).')
+	
 	def get_all_diseases(self):
 		# Lists all known diseases.
 		return _parse_pl_list(self.query("d."))
