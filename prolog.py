@@ -1,19 +1,24 @@
 from subprocess import Popen, PIPE
+import ast
+import re
 
-def _parse_list(str, depth):
-	if depth == 0:
-		return str
-	depth -= 1
-	res = []
-	for s in map(lambda x: x.strip(), str[1:-1].split(',')):
-		res.append(_parse_list(s, depth))
-	return res
-def _parse_pl_list(str, depth = 1):
-	return _parse_list(str[:str.index('\n')], depth)
+def _parse_pl_list(str: str):
+	str = str[:str.index('\n')]
+	str = re.sub(r'\w+', "'\g<0>'", str)
+	return ast.literal_eval(str)
 
 class PrologShell:
 	def __init__(self, program_file):
 		self.prolog = Popen(['/Applications/SWI-Prolog.app/Contents/MacOS/swipl', '-q', program_file], stdin=PIPE, stdout=PIPE, universal_newlines=True)
+		occurence = {}
+		self._symptom_occurence = occurence
+		for s in self.get_all_symptoms():
+			occurence[s] = 0
+		for d in self.get_all_diseases():
+			for symptoms in self.get_all_disease_symptoms(d):
+				for s in symptoms:
+					occurence[s] += 1
+		
 		
 	def query(self, query_string):
 		# Send query to Prolog process
@@ -28,6 +33,9 @@ class PrologShell:
 			res.append(line)
 		return '\n'.join(res)
 		
+	def get_symptom_occurence(self, symptom):
+		return self._symptom_occurence[symptom]
+
 	def get_all_diseases(self):
 		# Lists all known diseases.
 		return _parse_pl_list(self.query("d."))
@@ -60,21 +68,21 @@ class PrologShell:
 		# Lists all symptoms marked as 'unknown' in the patient.
 		return _parse_pl_list(self.query("us."))
 
-	def get_all_symptoms_for_disease(self, disease):
+	def get_all_disease_symptoms(self, disease):
 		# Lists all symptoms for a given disease.
-		return _parse_pl_list(self.query(f"ds('{disease}')."), 2)
+		return _parse_pl_list(self.query(f"ds('{disease}')."))
 
-	def get_yes_symptoms_for_disease(self, disease):
+	def get_yes_disease_symptoms(self, disease):
 		# Lists of symptoms where disease resolves to 'yes'.
-		return _parse_pl_list(self.query(f"yds('{disease}')."), 2)
+		return _parse_pl_list(self.query(f"yds('{disease}')."))
 
-	def get_no_symptoms_for_disease(self, disease):
+	def get_no_disease_symptoms(self, disease):
 		# Lists of symptoms where disease resolves to 'no'.
-		return _parse_pl_list(self.query(f"nds('{disease}')."), 2)
+		return _parse_pl_list(self.query(f"nds('{disease}')."))
 
-	def get_unknown_symptoms_for_disease(self, disease):
+	def get_unknown_disease_symptoms(self, disease):
 		# Lists of symptoms where disease resolves to 'unknown'.
-		return _parse_pl_list(self.query(f"uds('{disease}')."), 2)
+		return _parse_pl_list(self.query(f"uds('{disease}')."))
 
 	def get_all_susceptible_diseases(self):
 		return _parse_pl_list(self.query("susd."))
@@ -89,16 +97,16 @@ class PrologShell:
 		return _parse_pl_list(self.query("ususd."))
 
 	def get_all_susceptible_disease_symptoms(self, disease):
-		return _parse_pl_list(self.query(f"susds('{disease}')."), 2)
+		return _parse_pl_list(self.query(f"susds('{disease}')."))
 
 	def get_yes_susceptible_disease_symptoms(self, disease):
-		return _parse_pl_list(self.query(f"ysusds('{disease}')."), 2)
+		return _parse_pl_list(self.query(f"ysusds('{disease}')."))
 
 	def get_no_susceptible_disease_symptoms(self, disease):
-		return _parse_pl_list(self.query(f"nsusds('{disease}')."), 2)
+		return _parse_pl_list(self.query(f"nsusds('{disease}')."))
 
 	def get_unknown_susceptible_disease_symptoms(self, disease):
-		return _parse_pl_list(self.query(f"ususds('{disease}')."), 2)
+		return _parse_pl_list(self.query(f"ususds('{disease}')."))
 		
 	def __del__(self):
 		# Close the Prolog process when the wrapper is deleted
