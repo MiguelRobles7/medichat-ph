@@ -13,14 +13,8 @@ def find_symptoms_to_confirm(symptoms_list):
 				count += 1
 		return count
 	
-	min = (float('inf'), 'a')
-	for s in symptoms_list:
-		count = count_unknowns(s)
-		if count == 0:
-			continue
-		if count < min[0]:
-			min = (count, s)
-	symptoms = list(filter(lambda s: s in unknown_symptoms, min[1]))
+	symptoms = min(symptoms_list, key=count_unknowns)
+	symptoms = list(filter(lambda s: s in unknown_symptoms, symptoms))
 	symptoms.sort(key = lambda x: -pl.get_symptom_occurence(x))
 	return symptoms
 
@@ -44,17 +38,17 @@ if __name__ == "__main__":
 		unknown_diseases = pl.get_unknown_diseases()
 		if not unknown_diseases:
 			break
-		symptoms = itertools.chain(
-			*map(pl.get_unknown_disease_symptoms, unknown_diseases)
-			)
+		symptoms = itertools.chain.from_iterable(
+			map(pl.get_unknown_disease_symptoms, unknown_diseases)
+		)
 		to_confirm = find_symptoms_to_confirm(symptoms)
 		confirm_symptoms(to_confirm)
 	while True:
 		unknown_sus = pl.get_unknown_susceptible_diseases()
 		if not unknown_sus:
 			break
-		symptoms = itertools.chain(
-			*map(pl.get_unknown_susceptible_disease_symptoms, unknown_sus)
+		symptoms = itertools.chain.from_iterable(
+			map(pl.get_unknown_susceptible_disease_symptoms, unknown_sus)
 		)
 		to_confirm = find_symptoms_to_confirm(symptoms)
 		confirm_symptoms(to_confirm)
