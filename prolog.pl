@@ -19,7 +19,8 @@ no(D) :- disease(D),
         once((member(S, L), no(S)))
 	).
 unknown(X) :- \+yes(X), \+no(X).
-ysus(D) :- once(sus(D)).
+ysus(D) :- disease(D), yes(D), once(sus(D)).
+nsus(D) :- (\+disease(D); no(D)), !.
 nsus(D) :- 
     forall((
            clause(sus(D), B),
@@ -70,31 +71,31 @@ all_uds(D, X) :- disease(D),
 
 %query functions for susceptible diseases
 all_susd(X) :-
-    findall(A, clause(sus(A), _), L),
+    findall(A, (disease(A), clause(sus(A), _)), L),
     sort(L, X).
 all_ysusd(X) :- findall(D, (disease(D), ysus(D)), X).
 all_nsusd(X) :- findall(D, (disease(D), nsus(D)), X).
 all_ususd(X) :- findall(D, (disease(D), usus(D)), X).
 
 %query functions for symptoms of a susceptible disease
-all_susds(D, X) :- 
+all_susds(D, X) :- disease(D),
     findall(L, (
 		clause(sus(D), B),
 		symptom_list(B, L)
 	), X).
-all_ysusds(D, X) :-
+all_ysusds(D, X) :- disease(D),
     findall(L, (
 		clause(sus(D), B),
 		symptom_list(B, L),
 		forall(member(S, L), yes(S))
 	), X).
-all_nsusds(D, X) :-
+all_nsusds(D, X) :- disease(D),
     findall(L, (
 		clause(sus(D), B),
 		symptom_list(B, L),
 		once((member(S, L), no(S)))
 	), X).
-all_ususds(D, X) :-
+all_ususds(D, X) :- disease(D),
     findall(L, (
 		clause(sus(D), B),
 		symptom_list(B, L),
@@ -325,71 +326,71 @@ symptom(antacids_wt_magnesium).
 
 
 %susceptible
-sus(malaria) :- has(malaria), has(elder).
-sus(malaria) :- has(malaria), has(pregnant).
-sus(malaria) :- has(malaria), has(non_immunes).
-sus(malaria) :- has(malaria), has(chronic_illness).
-sus(tuberculosis) :- has(tuberculosis), has(smoker).
-sus(tuberculosis) :- has(tuberculosis), has(hiv_aids).
-sus(tuberculosis) :- has(tuberculosis), has(type_1_diabetes).
-sus(tuberculosis) :- has(tuberculosis), has(type_2_diabetes).
-sus(tuberculosis) :- has(tuberculosis), has(gestational_diabetes).
-sus(tuberculosis) :- has(tuberculosis), has(severe_kidney_disease).
-sus(tuberculosis) :- has(tuberculosis), has(head_cancer), has(neck_cancer).
-sus(tuberculosis) :- has(tuberculosis), has(chemotherapy).
-sus(tuberculosis) :- has(tuberculosis), has(underweight).
-sus(tuberculosis) :- has(tuberculosis), has(malnourished).
-sus(tuberculosis) :- has(tuberculosis), has(crohns_disease).
-sus(tuberculosis) :- has(tuberculosis), has(psoriasis).
-sus(tuberculosis) :- has(tuberculosis), has(organ_transplant_medications).
-sus(dengue) :- has(dengue), has(infant).
-sus(dengue) :- has(dengue), has(pregnant).
-sus(dengue) :- has(dengue), has(lives_near_stagnant_water).
-sus(type_1_diabetes) :- has(type_1_diabetes), has(child).
-sus(type_1_diabetes) :- has(type_1_diabetes), has(teen).
-sus(type_2_diabetes) :- has(type_2_diabetes), has(early_old).
-sus(type_2_diabetes) :- has(type_2_diabetes), has(immediate_family_wt_type_2_diabetes).
-sus(type_2_diabetes) :- has(type_2_diabetes), has(inactive_lifestyle).
-sus(gestational_diabetes) :- has(gestational_diabetes), has(pregnant).
-sus(gestational_diabetes) :- has(gestational_diabetes), has(girl), has(mid_age).
-sus(gestational_diabetes) :- has(gestational_diabetes), has(girl), has(immediate_family_wt_type_2_diabetes).
-sus(hypertension) :- has(hypertension), has(elder).
-sus(hypertension) :- has(hypertension), has(hereditary).
-sus(hypertension) :- has(hypertension), has(overweight).
-sus(hypertension) :- has(hypertension), has(obese).
-sus(hypertension) :- has(hypertension), has(inactive_lifestyle).
-sus(hypertension) :- has(hypertension), has(high_salt_diet).
-sus(hypertension) :- has(hypertension), has(high_intake_of_alcohol).
-sus(stroke) :- has(stroke), has(pregnant).
-sus(stroke) :- has(stroke), has(smoker).
-sus(stroke) :- has(stroke), has(overweight).
-sus(stroke) :- has(stroke), has(inactive_lifestyle).
-sus(stroke) :- has(stroke), has(type_1_diabetes).
-sus(stroke) :- has(stroke), has(type_2_diabetes).
-sus(stroke) :- has(stroke), has(high_intake_of_alcohol).
-sus(asthma) :- has(asthma), has(hereditary).
-sus(asthma) :- has(asthma), has(allergic_condition).
-sus(asthma) :- has(asthma), has(lives_in_urban).
-sus(asthma) :- has(asthma), has(smoke_exposure).
-sus(asthma) :- has(asthma), has(overweight).
-sus(asthma) :- has(asthma), has(obese).
-sus(leptospirosis) :- has(leptospirosis), has(works_outdoors).
-sus(leptospirosis) :- has(leptospirosis), has(works_wt_animals).
-sus(leptospirosis) :- has(leptospirosis), has(frequent_water_activites).
-sus(pneumonia) :- has(pneumonia), has(unvaccinated_for_pneumonia).
-sus(pneumonia) :- has(pneumonia), has(smoker).
-sus(pneumonia) :- has(pneumonia), has(smoke_exposure).
-sus(pneumonia) :- has(pneumonia), has(infant).
-sus(pneumonia) :- has(pneumonia), has(elder).
-sus(pneumonia) :- has(pneumonia), has(weak_immune_system).
-sus(pneumonia) :- has(pneumonia), has(hiv_aids).
-sus(pneumonia) :- has(pneumonia), has(organ_transplant_medications).
-sus(pneumonia) :- has(pneumonia), has(chemotherapy).
-sus(pneumonia) :- has(pneumonia), has(long_term_steroids).
-sus(diarrhea) :- has(diarrhea), has(antibiotics).
-sus(diarrhea) :- has(diarrhea), has(cancer_drugs).
-sus(diarrhea) :- has(diarrhea), has(antacids_wt_magnesium).
-sus(diarrhea) :- has(diarrhea), has(lactose_intolerant).
-sus(diarrhea) :- has(diarrhea), has(gallbladder_removal_surgery).
-sus(diarrhea) :- has(diarrhea), has(intestine_removal_surgery).
-sus(diarrhea) :- has(diarrhea), has(child), has(malnourished).
+sus(malaria) :- has(elder).
+sus(malaria) :- has(pregnant).
+sus(malaria) :- has(non_immunes).
+sus(malaria) :- has(chronic_illness).
+sus(tuberculosis) :- has(smoker).
+sus(tuberculosis) :- has(hiv_aids).
+sus(tuberculosis) :- has(type_1_diabetes).
+sus(tuberculosis) :- has(type_2_diabetes).
+sus(tuberculosis) :- has(gestational_diabetes).
+sus(tuberculosis) :- has(severe_kidney_disease).
+sus(tuberculosis) :- has(head_cancer), has(neck_cancer).
+sus(tuberculosis) :- has(chemotherapy).
+sus(tuberculosis) :- has(underweight).
+sus(tuberculosis) :- has(malnourished).
+sus(tuberculosis) :- has(crohns_disease).
+sus(tuberculosis) :- has(psoriasis).
+sus(tuberculosis) :- has(organ_transplant_medications).
+sus(dengue) :- has(infant).
+sus(dengue) :- has(pregnant).
+sus(dengue) :- has(lives_near_stagnant_water).
+sus(type_1_diabetes) :- has(child).
+sus(type_1_diabetes) :- has(teen).
+sus(type_2_diabetes) :- has(early_old).
+sus(type_2_diabetes) :- has(immediate_family_wt_type_2_diabetes).
+sus(type_2_diabetes) :- has(inactive_lifestyle).
+sus(gestational_diabetes) :- has(pregnant).
+sus(gestational_diabetes) :- has(girl), has(mid_age).
+sus(gestational_diabetes) :- has(girl), has(immediate_family_wt_type_2_diabetes).
+sus(hypertension) :- has(elder).
+sus(hypertension) :- has(hereditary).
+sus(hypertension) :- has(overweight).
+sus(hypertension) :- has(obese).
+sus(hypertension) :- has(inactive_lifestyle).
+sus(hypertension) :- has(high_salt_diet).
+sus(hypertension) :- has(high_intake_of_alcohol).
+sus(stroke) :- has(pregnant).
+sus(stroke) :- has(smoker).
+sus(stroke) :- has(overweight).
+sus(stroke) :- has(inactive_lifestyle).
+sus(stroke) :- has(type_1_diabetes).
+sus(stroke) :- has(type_2_diabetes).
+sus(stroke) :- has(high_intake_of_alcohol).
+sus(asthma) :- has(hereditary).
+sus(asthma) :- has(allergic_condition).
+sus(asthma) :- has(lives_in_urban).
+sus(asthma) :- has(smoke_exposure).
+sus(asthma) :- has(overweight).
+sus(asthma) :- has(obese).
+sus(leptospirosis) :- has(works_outdoors).
+sus(leptospirosis) :- has(works_wt_animals).
+sus(leptospirosis) :- has(frequent_water_activites).
+sus(pneumonia) :- has(unvaccinated_for_pneumonia).
+sus(pneumonia) :- has(smoker).
+sus(pneumonia) :- has(smoke_exposure).
+sus(pneumonia) :- has(infant).
+sus(pneumonia) :- has(elder).
+sus(pneumonia) :- has(weak_immune_system).
+sus(pneumonia) :- has(hiv_aids).
+sus(pneumonia) :- has(organ_transplant_medications).
+sus(pneumonia) :- has(chemotherapy).
+sus(pneumonia) :- has(long_term_steroids).
+sus(diarrhea) :- has(antibiotics).
+sus(diarrhea) :- has(cancer_drugs).
+sus(diarrhea) :- has(antacids_wt_magnesium).
+sus(diarrhea) :- has(lactose_intolerant).
+sus(diarrhea) :- has(gallbladder_removal_surgery).
+sus(diarrhea) :- has(intestine_removal_surgery).
+sus(diarrhea) :- has(child), has(malnourished).
