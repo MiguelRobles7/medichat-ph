@@ -1,0 +1,7 @@
+{% extends 'base.html' %} {% block head %}
+<title>Diagnosis Results</title>
+{% endblock %} {% block body %} You have: <br />
+{% for d in diseases %} {{d}} <br />
+{% endfor %} You are susceptible to:<br />
+{% for d in sus %} {{d}} <br />
+{% endfor %} {% endblock %}

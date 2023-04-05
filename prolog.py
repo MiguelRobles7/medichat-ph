@@ -9,10 +9,10 @@ def _parse_pl_list(str: str):
 
 class PrologShell:
 	def __init__(self, program_file):
-		self.prolog = Popen(['/Applications/SWI-Prolog.app/Contents/MacOS/swipl', '-q', program_file], stdin=PIPE, stdout=PIPE, universal_newlines=True)
+		self.prolog = Popen(['/Program Files/swipl/bin/swipl.exe', '-q', program_file], stdin=PIPE, stdout=PIPE, universal_newlines=True)
 		occurence = {}
 		self._symptom_occurence = occurence
-		for s in self.get_all_symptoms():
+		for s in self.get_all_symptoms():	
 			occurence[s] = 0
 		for d in self.get_all_diseases():
 			for symptoms in self.get_all_disease_symptoms(d):
