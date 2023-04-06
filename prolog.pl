@@ -29,7 +29,7 @@ nsus(D) :-
 		clause(sus(D), B),
 		symptom_list(B, L),
         percent_nds(L, P),
-		P > 0.4
+		P > 0.2
     )), !.
 usus(D) :- \+ysus(D), \+nsus(D).
 
@@ -168,7 +168,7 @@ percent_yes(D, Percent) :-
 	    percent_yds(L, P)
 	), List),
     max_list(List, Percent), !.
-percent_high(_, 0) :- !.
+percent_yes(_, 0) :- !.
 
 percent_no(X, P) :-
     has_no(X), P is 1, !.
