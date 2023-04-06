@@ -30,7 +30,7 @@ nsus(D) :-
 		symptom_list(B, L)
 		), (
         percent_nds(L, P),
-		P > 0.4
+		P > 0.2
 	)), !.
 usus(D) :- \+ysus(D), \+nsus(D).
 
