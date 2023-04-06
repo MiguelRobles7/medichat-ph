@@ -20,8 +20,8 @@ def find_symptoms_to_confirm(symptoms_list):
 
 def confirm_symptoms(symptoms):
 	for s in symptoms:
-		#y = input(f'Do you have ' + s.replace('_', ' ') + '? ').rstrip()
-		y = 'n'
+		y = input(f'Do you have ' + s.replace('_', ' ') + '? ').rstrip()
+		#y = 'n'
 		if y[0].lower() == 'y':
 			pl.assert_symptom(s)
 		else:
