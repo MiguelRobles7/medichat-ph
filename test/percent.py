@@ -2,7 +2,7 @@ from prolog_percent import PrologShell
 import re
 import itertools
 
-pl = PrologShell('percent.pl')
+pl = PrologShell('percent-test.pl')
 
 def find_symptoms_to_confirm(symptoms_list):
 	unknown_symptoms = set(pl.get_unknown_symptoms())
