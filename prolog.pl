@@ -27,10 +27,11 @@ nsus(D) :- (\+disease(D); no(D)), !.
 nsus(D) :- 
     forall((
 		clause(sus(D), B),
-		symptom_list(B, L),
+		symptom_list(B, L)
+		), (
         percent_nds(L, P),
-		P > 0.2
-    )), !.
+		P > 0.4
+	)), !.
 usus(D) :- \+ysus(D), \+nsus(D).
 
 
