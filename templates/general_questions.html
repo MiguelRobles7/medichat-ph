@@ -2,30 +2,143 @@
 <title>General Questions</title>
 {% endblock %} {% block body %}
 
-<div class="container">
-  <form method="POST" class="form-register gen-form">
-    {{ form.hidden_tag() }}
-    <br />
-    {{ form.bmi.label() }} Healthy = 18.5 - 24.9<br />
-    {{ form.bmi(class="form-control", placeholder="BMI")}}
-    <br />
-    {{ form.age.label() }} <br />
-    {{ form.age(class="form-control", placeholder="Age")}}
-    <br />
-    <br />
-    <input type="checkbox" value="fever" name="symptoms" /> Fever?
-    <br />
-    <input type="checkbox" value="diabetes" name="symptoms" /> Diabetes?
-    <br />
-    <input type="checkbox" value="pregnant" name="symptoms" /> Pregnant?
-    <br />
-    <input type="checkbox" value="rash" name="symptoms" /> Rash?
-    <br />
-    <input type="checkbox" value="cough" name="symptoms" /> Cough?
-    <br />
-    <br />
-    {{ form.submit_field(class="btn btn-lg btn-primary btn-block") }}
-  </form>
+<div class="others-wrapper container">
+  <img class="blob-top" style="left: 4%" src="static/images/blob_top_2.svg" />
+  <img class="blob-bot" src="static/images/blob_bot_2.svg" />
+  <nav class="navbar row">
+    <div class="col-6 navbar-brand">
+      <a style="color: white" href=""> Medichat PH > Initial </a>
+    </div>
+    <div class="col-6 pill-container row justify-content-end">
+      <div class="navbar-pill">
+        <img src="static/images/prolog.png" class="navbar-logo" />
+        Made with Prolog
+      </div>
+      <div class="navbar-pill">
+        <img src="static/images/python.png" class="navbar-logo" />
+        Ran on Python
+      </div>
+    </div>
+  </nav>
+  <div class="row main-container">
+    <form method="POST" class="form-register">
+      {{ form.hidden_tag() }}
+      <div class="general-questions-container">
+        <span class="general-label">General Questions</span><br /><br />
+        <div class="general-input-container">
+          <div class="general-input-label">Sex</div>
+          <div>
+            {{ form.gender(class="form-control general-input",
+            placeholder="M/F") }}
+          </div>
+        </div>
+        <div class="general-input-container">
+          <div class="general-input-label">BMI</div>
+          <div>
+            {{ form.bmi(class="form-control general-input", placeholder="Num")
+            }}
+          </div>
+        </div>
+
+        <div class="general-input-container">
+          <div class="general-input-label">Age</div>
+          <div>
+            {{ form.age(class="form-control general-input", placeholder="Num")
+            }}
+          </div>
+        </div>
+      </div>
+      <br />
+      <br />
+      <div class="general-questions-container">
+        <span class="general-label">General Symptoms</span><br /><br />
+        <div class="custom-checkbox-container">
+          <div class="checkbox-input-label">
+            <input type="checkbox" value="tiredness" name="symptoms" />
+          </div>
+          <div class="custom-checkbox-label">Tiredness</div>
+        </div>
+        <div class="custom-checkbox-container">
+          <div class="checkbox-input-label">
+            <input type="checkbox" value="tiredness" name="symptoms" />
+          </div>
+          <div class="custom-checkbox-label">Coughs</div>
+        </div>
+        <div class="custom-checkbox-container">
+          <div class="checkbox-input-label">
+            <input type="checkbox" value="tiredness" name="symptoms" />
+          </div>
+          <div class="custom-checkbox-label">Headache</div>
+        </div>
+        <br />
+        <br />
+        <div class="custom-checkbox-container">
+          <div class="checkbox-input-label">
+            <input type="checkbox" value="tiredness" name="symptoms" />
+          </div>
+          <div class="custom-checkbox-label">Fever</div>
+        </div>
+        <div class="custom-checkbox-container">
+          <div class="checkbox-input-label">
+            <input type="checkbox" value="tiredness" name="symptoms" />
+          </div>
+          <div class="custom-checkbox-label">Dizziness</div>
+        </div>
+        <div class="custom-checkbox-container">
+          <div class="checkbox-input-label">
+            <input type="checkbox" value="tiredness" name="symptoms" />
+          </div>
+          <div class="custom-checkbox-label">Sweats</div>
+        </div>
+        <br />
+        <br />
+        <div class="custom-checkbox-container">
+          <div class="checkbox-input-label">
+            <input type="checkbox" value="tiredness" name="symptoms" />
+          </div>
+          <div class="custom-checkbox-label">Aching</div>
+        </div>
+        <div class="custom-checkbox-container">
+          <div class="checkbox-input-label">
+            <input type="checkbox" value="tiredness" name="symptoms" />
+          </div>
+          <div class="custom-checkbox-label">Nausea</div>
+        </div>
+        <div class="custom-checkbox-container">
+          <div class="checkbox-input-label">
+            <input type="checkbox" value="tiredness" name="symptoms" />
+          </div>
+          <div class="custom-checkbox-label">Fatigue</div>
+        </div>
+      </div>
+      <br />
+      <br />
+      <div class="general-questions-container">
+        <span class="general-label">Known Illnesses</span><br /><br />
+        <div class="custom-checkbox-container">
+          <div class="checkbox-input-label">
+            <input type="checkbox" value="tiredness" name="symptoms" />
+          </div>
+          <div class="custom-checkbox-label">Diabetes</div>
+        </div>
+        <div class="custom-checkbox-container">
+          <div class="checkbox-input-label">
+            <input type="checkbox" value="tiredness" name="symptoms" />
+          </div>
+          <div class="custom-checkbox-label">Cancer</div>
+        </div>
+        <div class="custom-checkbox-container">
+          <div class="checkbox-input-label">
+            <input type="checkbox" value="tiredness" name="symptoms" />
+          </div>
+          <div class="custom-checkbox-label">Lactose</div>
+        </div>
+      </div>
+      <br />
+      <br />
+      <div>{{ form.submit_field(class="general-continue-button") }}</div>
+    </form>
+  </div>
 </div>
 
 {% endblock %}
