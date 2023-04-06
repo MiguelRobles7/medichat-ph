@@ -9,25 +9,28 @@ assert_age(A) :- number(A), \+ age(_), asserta(age(A)), !.
 assert_bmi(A) :- number(A), \+ bmi(_), asserta(bmi(A)), !.
 
 %definitions
-yes(X) :- once(has(X)).
-no(D) :- has_no(D), !.
-no(D) :- disease(D),
-    forall((
-			clause(has(D), B),
-			symptom_list(B, L)
-		),
-        once((member(S, L), no(S)))
-	).
+yes(X) :- 
+    percent_yes(X, P),
+    P >= 0.8, !.
+no(X) :- percent_no(X, P),
+    P > 0.2, !.
 unknown(X) :- \+yes(X), \+no(X).
-ysus(D) :- disease(D), yes(D), once(sus(D)).
+
+ysus(D) :- disease(D), yes(D),
+    once((
+        clause(sus(D), B),
+		symptom_list(B, L),
+	    percent_yds(L, P),
+		P >= 0.8
+	)), !.
 nsus(D) :- (\+disease(D); no(D)), !.
 nsus(D) :- 
     forall((
-           clause(sus(D), B),
-           symptom_list(B, L)
-        ),
-        once((member(S, L), no(S)))
-	).
+		clause(sus(D), B),
+		symptom_list(B, L),
+        percent_nds(L, P),
+		P > 0.4
+    )), !.
 usus(D) :- \+ysus(D), \+nsus(D).
 
 
@@ -53,20 +56,23 @@ all_yds(D, X) :- disease(D),
     findall(L, (
         clause(has(D), B),
         symptom_list(B, L),
-		forall(member(S, L), yes(S))
+		percent_yds(L, Y),
+		Y >= 0.8
     ), X).
 all_nds(D, X) :- disease(D),
     findall(L, (
 		clause(has(D), B),
 		symptom_list(B, L),
-		once((member(S, L), no(S)))
+		percent_nds(L, N),
+		N > 0.2
     ), X).
 all_uds(D, X) :- disease(D),
     findall(L, (
 		clause(has(D), B),
 		symptom_list(B, L),
-		\+once((member(S, L), no(S))),
-		\+forall(member(S, L), yes(S))
+		percent_yds(L, Y),
+		percent_nds(L, N),
+		N =< 0.2, Y < 0.8
     ), X).
 
 %query functions for susceptible diseases
@@ -87,20 +93,23 @@ all_ysusds(D, X) :- disease(D),
     findall(L, (
 		clause(sus(D), B),
 		symptom_list(B, L),
-		forall(member(S, L), yes(S))
+		percent_yds(L, Y),
+		Y >= 0.8
 	), X).
 all_nsusds(D, X) :- disease(D),
     findall(L, (
 		clause(sus(D), B),
 		symptom_list(B, L),
-		once((member(S, L), no(S)))
+		percent_nds(L, N),
+		N > 0.2
 	), X).
 all_ususds(D, X) :- disease(D),
     findall(L, (
 		clause(sus(D), B),
 		symptom_list(B, L),
-		\+once((member(S, L), no(S))),
-		\+forall(member(S, L), yes(S))
+		percent_yds(L, Y),
+		percent_nds(L, N),
+		N =< 0.2, Y < 0.8
 	), X).
 
 %typing is hard
@@ -134,6 +143,43 @@ symptom_list(has(Term), [Term]).
 symptom_list((has(Term1), Term2), [Term1|List]) :- 
     symptom_list(Term2, List), !.
 
+percent_yds(L, P) :-
+    aggregate_all(count, (
+		member(S, L),
+		yes(S)
+	), Count),
+    length(L, Len),
+    P is Count / Len.
+percent_nds(L, P) :-
+    aggregate_all(count, (
+		member(S, L),
+		no(S)
+	), Count),
+    length(L, Len),
+    P is Count / Len.
+
+
+percent_yes(X, P) :-
+    has(X), P is 1, !.
+percent_yes(D, Percent) :-
+    findall(P, (
+        clause(has(D), B),
+		symptom_list(B, L),
+	    percent_yds(L, P)
+	), List),
+    max_list(List, Percent), !.
+percent_high(_, 0) :- !.
+
+percent_no(X, P) :-
+    has_no(X), P is 1, !.
+percent_no(D, Percent) :-
+    findall(P, (
+        clause(has(D), B),
+		symptom_list(B, L),
+	    percent_nds(L, P)
+	), List),
+    min_list(List, Percent), !.
+percent_no(_, 0) :- !.
 
 
 %knowledge base
