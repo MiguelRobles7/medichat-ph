@@ -2,6 +2,8 @@ from subprocess import Popen, PIPE
 import ast
 import re
 
+F = open('prolog_log.txt', 'w')
+
 def _parse_pl_list(str: str):
 	str = str[:str.index('\n')]
 	str = re.sub(r'\w+', "'\g<0>'", str)
@@ -24,6 +26,7 @@ class PrologShell:
 		# Send query to Prolog process
 		self.prolog.stdin.write(query_string + '\n')
 		self.prolog.stdin.flush()
+		F.write(query_string + '\n')
 
 		res = []
 		while True:
@@ -127,3 +130,4 @@ class PrologShell:
 		self.prolog.stdin.close()
 		self.prolog.stdout.close()
 		self.prolog.kill()
+		F.close()
