@@ -1,0 +1,42 @@
+{% extends 'base.html' %} {% block head %}
+<title>Medichat PH</title>
+{% endblock %} {% block body %}
+<!-- NAV BAR -->
+
+<div class="home-wrapper container">
+  <img class="blob-top-1" src="static/images/blob_top_1.svg" />
+  <img class="blob-bot-1" src="static/images/blob_bot_1.svg" />
+  <nav class="navbar row">
+    <div class="col-6 navbar-brand">
+      <a style="color: white" href="/general"> Medichat PH > Home </a>
+    </div>
+    <div class="col-6 pill-container row justify-content-end">
+      <div class="navbar-pill">
+        <img src="static/images/prolog.png" class="navbar-logo" />
+        Made with Prolog
+      </div>
+      <div class="navbar-pill">
+        <img src="static/images/python.png" class="navbar-logo" />
+        Ran on Python
+      </div>
+    </div>
+  </nav>
+  <div class="row align-items-center home-main-container vertical-center">
+    <p class="col-12 home-title">Medichat PH</p>
+    <div class="col-4 home-description">
+      Answer a few questions and get a diagnosis in minutes. We determine
+      possible illnesses based on the symptoms you are experiencing.
+    </div>
+    <div class="col-8" style="padding: 20px 0 0 10px">
+      <button
+        class="home-continue-button"
+        onclick="window.location.href='general'"
+      >
+        PROCEED
+        <img src="static/images/keyboard_arrow_right.png" />
+      </button>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

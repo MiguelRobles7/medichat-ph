@@ -23,6 +23,11 @@ p = Patient()
 
 
 @app.route('/')
+@app.route('/index')
+def index():
+    return render_template('index.html')
+
+
 @app.route('/general', methods=['GET', 'POST'])
 def general():
     form = GeneralForm()
