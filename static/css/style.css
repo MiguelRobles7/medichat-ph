@@ -80,7 +80,6 @@ body {
   top: 0;
   left: 3%;
   z-index: -1;
-
   height: 25%;
   width: 25%;
 }
@@ -221,4 +220,15 @@ body {
   font-family: Aldrich;
   font-size: 1em;
   color: #2a2b2f;
+}
+.symptoms-button {
+  width: 6em;
+  height: 6em;
+  border-radius: 50%;
+  border: 0.5px solid #2a2b2f;
+}
+.symptoms-container {
+  gap: 4vw;
+  display: inline-flex;
+  padding: 2em 0 0 0;
 }

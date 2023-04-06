@@ -1,13 +1,48 @@
 {% extends 'base.html' %} {% block head %}
 <title>General Questions</title>
 {% endblock %} {% block body %}
-<h1>{{ question }}</h1>
-<form method="POST" class="form-register gen-form">
-  {{ form.hidden_tag() }} {{ form.symptoms }} <br />
-  <!-- <form action="" method="post">
-    <input type="submit" name="upvote" value="Upvote" />
-  </form> -->
-  {{ form.next_button(class="") }}
-</form>
+
+<div class="others-wrapper container">
+  <img class="blob-top" style="left: 4.5%" src="static/images/blob_top_3.svg" />
+  <img
+    class="blob-bot"
+    style="padding-left: 0; padding-top: 20%"
+    src="static/images/blob_bot_3.svg"
+  />
+  <nav class="navbar row">
+    <div class="col-6 navbar-brand">
+      <a style="color: white" href=""> Medichat PH > Symptoms </a>
+    </div>
+    <div class="col-6 pill-container row justify-content-end">
+      <div class="navbar-pill">
+        <img src="static/images/prolog.png" class="navbar-logo" />
+        Made with Prolog
+      </div>
+      <div class="navbar-pill">
+        <img src="static/images/python.png" class="navbar-logo" />
+        Ran on Python
+      </div>
+    </div>
+  </nav>
+  <div class="row text-center">
+    <h1>{{ question }}</h1>
+    <form method="POST" class="form-register">
+      <div class="symptoms-container">
+        <input
+          class="symptoms-button"
+          type="submit"
+          name="symptoms"
+          value="Yes"
+        />
+        <input
+          class="symptoms-button"
+          type="submit"
+          name="symptoms"
+          value="No"
+        />
+      </div>
+    </form>
+  </div>
+</div>
 
 {% endblock %}
