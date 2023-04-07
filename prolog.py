@@ -44,6 +44,10 @@ class PrologShell:
 
 	def assert_no_symptom(self, symptom):
 		self.query(f'an({symptom}).')
+		
+	def assert_gender(self, gender):
+		gender = 'male' if gender[0].lower() == 'm' else 'female'
+		self.assert_symptom(gender)
 
 	def assert_bmi(self, bmi):
 		self.query(f'assert_bmi({bmi}).')
