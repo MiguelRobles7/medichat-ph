@@ -237,6 +237,14 @@ has_no(teen) :- age(_), \+has(teen).
 has_no(child) :- age(A), A > 12.
 has_no(infant) :- age(A), A > 1.
 
+%gender related
+has_no(gestational_diabetes) :- has(male).
+has_no(given_birth_to_9_pound_baby) :- has(male).
+has_no(yeast_infections) :- has(male).
+has_no(polycystic_ovary_syndrome) :- has(male).
+has_no(pregnant) :- has(male).
+has_no(girl) :- has(male).
+
 %diseases
 disease(malaria).
 disease(tuberculosis).
