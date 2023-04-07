@@ -378,6 +378,7 @@ symptom(antibiotics).
 symptom(overweight).
 symptom(long_term_steroids).
 symptom(antacids_wt_magnesium).
+symptom(male).
 
 
 %susceptible
