@@ -42,11 +42,9 @@ class PrologShell:
         return self._symptom_occurence.get(symptom, 0)
 
     def assert_symptom(self, symptom):
-        print("Symp: " + symptom)
         self.query(f'ay({symptom}).')
 
     def assert_no_symptom(self, symptom):
-        print("No Symp: " + symptom)
         self.query(f'an({symptom}).')
 
     def assert_gender(self, gender):

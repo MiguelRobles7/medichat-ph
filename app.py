@@ -48,7 +48,6 @@ def general():
 
         if symptoms:
             for s in symptoms:
-                print(s)
                 pl.assert_symptom(s)
         return redirect(url_for('symptoms'))
     return render_template('general_questions.html', form=form)
@@ -60,21 +59,13 @@ def symptoms():
     form = SymptomsForm()
     try:
         if request.method == 'POST':
-            print("POST")
             ans = request.form.get('symptoms')
-            print(ans)
-            print(p.to_confirm[0])
-            print("PRE")
-            print(p.to_confirm)
             if ans == 'Yes':
                 pl.assert_symptom(p.to_confirm[0])
-                print(p.to_confirm.pop(0))
             else:
                 pl.assert_no_symptom(p.to_confirm[0])
                 p.to_confirm = []
 
-            print("POST")
-            print(p.to_confirm)
     except:
         if not p.unknown_diseases and not p.unknown_sus:
             return redirect(url_for('results'))
@@ -100,7 +91,6 @@ def symptoms():
 
         if not p.to_confirm:
             p.to_confirm = find_symptom_to_confirm(symptoms)
-    print(p.to_confirm)
     return render_template('symptoms_questions.html', form=form, question=normalize_question_format(p.to_confirm[0]))
 
 
