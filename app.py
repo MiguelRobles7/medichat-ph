@@ -14,6 +14,7 @@ class Patient:
     def __init__(self):
         self.bmi = 0
         self.age = 0
+        self.gender = 'male'
         self.unknown_diseases = []
         self.unknown_sus = []
         self.to_confirm = []
@@ -34,6 +35,15 @@ def general():
     if request.method == 'POST':
         p.age = form.age.data
         p.bmi = form.bmi.data
+        if form.gender.data == 'M':
+            p.gender = 'male'
+        else:
+            p.gender = 'female'
+
+        pl.assert_age(p.age)
+        pl.assert_bmi(p.bmi)
+        pl.assert_gender(p.gender)
+
         symptoms = request.form.getlist('symptoms')
 
         if symptoms:
@@ -82,14 +92,14 @@ def symptoms():
                 map(pl.get_unknown_susceptible_disease_symptoms, p.unknown_sus)
             )
             if not p.to_confirm:
-                p.to_confirm = find_symptoms_to_confirm(symptoms)
+                p.to_confirm = find_symptom_to_confirm(symptoms)
     else:
         symptoms = itertools.chain.from_iterable(
             map(pl.get_unknown_disease_symptoms, p.unknown_diseases)
         )
 
         if not p.to_confirm:
-            p.to_confirm = find_symptoms_to_confirm(symptoms)
+            p.to_confirm = find_symptom_to_confirm(symptoms)
 
     return render_template('symptoms_questions.html', form=form, question="Do you have " + p.to_confirm[0].replace('_', ' ') + "?")
 
@@ -103,20 +113,19 @@ if __name__ == '__main__':
     app.run(debug=True)
 
 
-def find_symptoms_to_confirm(symptoms_list):
+def find_symptom_to_confirm(symptoms_list):
     unknown_symptoms = set(pl.get_unknown_symptoms())
 
-    def count_unknowns(sym):
+    def count_unknowns(symptoms):
         count = 0
-        for s in sym:
+        for s in symptoms:
             if s in unknown_symptoms:
                 count += 1
         return count
 
     symptoms = min(symptoms_list, key=count_unknowns)
-    symptoms = list(filter(lambda s: s in unknown_symptoms, symptoms))
-    symptoms.sort(key=lambda x: -pl.get_symptom_occurence(x))
-    return symptoms
+    symptoms = filter(lambda s: s in unknown_symptoms, symptoms)
+    return [(max(symptoms, key=lambda x: pl.get_symptom_occurence(x)))]
 
 
 def confirm_symptoms(symptoms):
