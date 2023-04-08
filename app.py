@@ -100,13 +100,23 @@ def symptoms():
 
         if not p.to_confirm:
             p.to_confirm = find_symptom_to_confirm(symptoms)
-
-    return render_template('symptoms_questions.html', form=form, question="Do you have " + p.to_confirm[0].replace('_', ' ') + "?")
+    print(p.to_confirm)
+    return render_template('symptoms_questions.html', form=form, question=normalize_question_format(p.to_confirm[0]))
 
 
 @app.route('/results')
 def results():
-    return render_template('results.html', diseases=pl.get_yes_diseases(), sus=pl.get_yes_susceptible_diseases())
+    diseases = []
+    sus = []
+    for d in pl.get_yes_diseases():
+        diseases.append(normalize_prolog_names(d))
+    for s in pl.get_yes_susceptible_diseases():
+        sus.append(normalize_prolog_names(s))
+
+    danger_diseases = ["Dengue", "Stroke"]
+    warning_disease = ["Malaria", "Tuberculosis",
+                       "Type 2 Diabetes",  "Hypertension", "Leptospirosis"]
+    return render_template('results.html', diseases=diseases, sus=sus, danger_diseases=danger_diseases, warning_disease=warning_disease)
 
 
 if __name__ == '__main__':
@@ -136,3 +146,24 @@ def confirm_symptoms(symptoms):
         else:
             pl.assert_no_symptom(s)
             break
+
+# dirty way to make sure questions in app make sense
+
+
+def normalize_question_format(name):
+    if name == "coughing_blood_mucus" or name == "unusually_more_thirsty" or name == "coughing_blood_mucus_green_yellow" or name == "unvaccinated_for_pneumonia" or name == "malnourished" or name == "unusually_more_thirsty" or name == "urinating_often":
+        return "Are you " + normalize_prolog_names(name) + "?"
+    elif name == "works_wt_animals" or name == "lives_in_urban" or name == "lives_near_stagnant_water":
+        return "Do you " + normalize_prolog_names(name) + "?"
+    elif name == "smoker":
+        return "Are you a " + normalize_prolog_names(name) + "?"
+    elif name == "given_birth_to_9_pound_baby" or name == "gestational_diabetes" or name == "type_2_diabetes" or name == "chemotherapy" or name == "intestine_removal_surgery" or name == "gallbladder_removal_surgery":
+        return "Have you ever had" + normalize_prolog_names(name) + "?"
+    elif name == "long_term_steroids" or name == "antacids_wt_magnesium" or name == "antibiotics":
+        return "Have you taken " + normalize_prolog_names(name) + "recently?"
+    else:
+        return "Do you have " + normalize_prolog_names(name) + "?"
+
+
+def normalize_prolog_names(name):
+    return re.sub(r'([a-z])([A-Z])', r'\1 \2', name).replace('_', ' ').title()

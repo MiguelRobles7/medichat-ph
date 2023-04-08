@@ -1,7 +1,93 @@
 {% extends 'base.html' %} {% block head %}
-<title>Diagnosis Results</title>
-{% endblock %} {% block body %} You have: <br />
-{% for d in diseases %} {{d}} <br />
-{% endfor %} You are susceptible to:<br />
-{% for d in sus %} {{d}} <br />
-{% endfor %} {% endblock %}
+<title>MedichatPH - Results</title>
+{% endblock %} {% block body %}
+
+<div class="others-wrapper container">
+  <nav class="navbar row">
+    <div class="col-6 navbar-brand">
+      <a style="color: black" href=""> Medichat PH > Results </a>
+    </div>
+    <div class="col-6 pill-container row justify-content-end">
+      <div class="navbar-pill">
+        <img src="static/images/prolog.png" class="navbar-logo" />
+        Made with Prolog
+      </div>
+      <div class="navbar-pill">
+        <img src="static/images/python.png" class="navbar-logo" />
+        Ran on Python
+      </div>
+    </div>
+  </nav>
+
+  <div class="result-wrapper" style="margin-top: -10vh">
+    <h1>You may have the following diseases...</h1>
+    <div class="d-flex justify-content-center disease-container">
+      {% for d in diseases %} {% if d in danger_diseases %}
+      <div class="results-pill emergency-pill">
+        <div class="results-label">{{d}}</div>
+      </div>
+      {% elif d in warning_disease%}
+      <div class="results-pill warning-pill">
+        <div class="results-label">{{d}}</div>
+      </div>
+      {% else %}
+      <div class="results-pill">
+        <div class="results-label">{{d}}</div>
+      </div>
+      {% endif %} {% endfor %}
+    </div>
+    <div class="col-md-12 d-flex justify-content-center">
+      <div class="results-pill">
+        <div class="results-label">
+          Not an emergency, it is advised to refer to a large medical facility
+          to confirm.
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 d-flex justify-content-center" style="gap: 15px">
+      <div class="results-pill warning-pill col-md-5">
+        <div class="results-label">
+          These diseases while not immediate, but may be dangerous without
+          treatment.
+        </div>
+      </div>
+      <div class="results-pill emergency-pill col-md-5">
+        <div class="results-label">
+          These diseases are serious and you may need to apply immediate medical
+          attention.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="result-wrapper">
+    <h1>You may be susceptible to the following...</h1>
+    <div class="d-flex justify-content-center disease-container">
+      {% for d in sus %}
+      <div class="results-pill">
+        <div class="results-label">{{d}}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="next-container">
+    <h1>A little reminder</h1>
+    <p>
+      Nothing is better than a actual general diagnosis from a doctor! This
+      app's database is incomplete, and bases off of the symptoms you have
+      provided. You may accidentally input wrong symptoms, or you may have an
+      illness not registered in the database. We remind you that this app should
+      not be used as a substitute for professional medical advice, diagnosis, or
+      treatment. If you have any doubts or concerns, you should consult a
+      qualified healthcare provider before using any medications or treatments.
+      For all the given diseases, if they are not critical, it is recommended to
+      possibly go to a health facility that may be able to confirm that you do
+      indeed have the disease before trying any aid or medicine. Finally, we
+      recommend that you use this app as a tool to complement your healthcare
+      provider's advice and not as a replacement. Please seek professional
+      medical advice if you are experiencing severe symptoms or have any doubts
+      or concerns about your health.
+    </p>
+  </div>
+</div>
+
+{% endblock %}
