@@ -62,6 +62,7 @@ def symptoms():
             ans = request.form.get('symptoms')
             if ans == 'Yes':
                 pl.assert_symptom(p.to_confirm[0])
+                p.to_confirm.pop(0)
             else:
                 pl.assert_no_symptom(p.to_confirm[0])
                 p.to_confirm = []
@@ -91,6 +92,7 @@ def symptoms():
 
         if not p.to_confirm:
             p.to_confirm = find_symptom_to_confirm(symptoms)
+
     return render_template('symptoms_questions.html', form=form, question=normalize_question_format(p.to_confirm[0]))
 
 
