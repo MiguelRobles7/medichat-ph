@@ -29,7 +29,7 @@ Install `Python => version 3.11` & `Pip3`
 Starting Off, in Powershell
 
 ```bash
-  git clone https://github.com/MiguelRobles7/medical-chatbot & cd medical-chatbot
+  git clone https://github.com/MiguelRobles7/medichat-ph & cd medichat-ph
   pip install virtualenv
   python -m virtualenv env
   .\env\Scripts\activate.ps1
@@ -46,7 +46,7 @@ Then access the project with the given link
 
 ## Troubleshooting
 
-- **PrologShell object has no attribute 'prolog'** - By default the app points to Swi-Prolog's default install path, if it is somewhere else on your device, find the path to `swipl.exe` and replace line 16 in `medical-chatbot/prolog.py`
+- **PrologShell object has no attribute 'prolog'** - By default the app points to Swi-Prolog's default install path, if it is somewhere else on your device, find the path to `swipl.exe` and replace line 16 in `medichat-ph/prolog.py`
 - **Error on `.\env\Scripts\activate.ps1`** - This has something to do with windows' default execution policy. Try running `Set-ExecutionPolicy Unrestricted -Scope Process` in an admin powershell. Read more [here.](https://stackoverflow.com/questions/18713086/virtualenv-wont-activate-on-windows)
 
 - **`flask --app app.py --debug run` isn't working** - Make sure you are inside the virtual environment by running `.\env\Scripts\activate.ps1`
@@ -62,5 +62,5 @@ Then access the project with the given link
 
 
 ## Developers
-- [@MiguelRobles7]()
+- [@MiguelRobles7](https://github.com/MiguelRobles7)
 - [@qwerttyuiiop1](https://github.com/qwerttyuiiop1)
