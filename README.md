@@ -1,6 +1,24 @@
-# medical-chatbot
+# medichat-ph
 
-Major Course Output 2 for CSINTSY (Intelligent Systems) class at De La Salle University.
+Major Course Output 2 for CSINTSY (Intelligent Systems) class at De La Salle University. An online medical diagnosis chatbot using Flask and Prolog.
+
+## **WARNING**
+This project was made mainly to showcase the students' skills in using Prolog for a real life scenario, **NOT for actual use.**
+
+## Handled Diseases 
+- malaria
+- tuberculosis
+- dengue fever
+- diabetes
+  - type 1
+  - type 2
+  - gestational
+- hypertension
+- stroke
+- asthma
+- leptospirosis
+- pneumonia
+- diarrhea
 
 ## **Prerequisites**
 
@@ -34,3 +52,15 @@ Then access the project with the given link
 - **`flask --app app.py --debug run` isn't working** - Make sure you are inside the virtual environment by running `.\env\Scripts\activate.ps1`
 
 - **High memory usage on Mac** - For some reason virtualenv consumes a lot of memory on Mac, in this case, while not recommended, running without a virtual environment is the only alternative. Simply run `pip install -r requirements.txt`
+
+## Screenshots
+
+![App Screenshot](https://github.com/MiguelRobles7/medichat-ph/blob/main/screenshots/home.png)
+![App Screenshot](https://github.com/MiguelRobles7/medichat-ph/blob/main/screenshots/initial_questions.png)
+![App Screenshot](https://github.com/MiguelRobles7/medichat-ph/blob/main/screenshots/symptoms_questions.png)
+![App Screenshot](https://github.com/MiguelRobles7/medichat-ph/blob/main/screenshots/results.png)
+
+
+## Developers
+- [@MiguelRobles7]()
+- [@qwerttyuiiop1](https://github.com/qwerttyuiiop1)
